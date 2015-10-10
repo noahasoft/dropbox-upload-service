@@ -72,4 +72,4 @@ def upload(filepath):
     )
 
 
-run(host='localhost', port=settings.PORT)
+run(host='0.0.0.0', port=settings.PORT)
