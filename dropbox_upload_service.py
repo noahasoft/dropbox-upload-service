@@ -2,12 +2,13 @@ from bottle import HTTPResponse, route, run, template
 import os
 import os.path
 import shutil
+import sys
 import threading
 
-
-PORT = 9999
-SOURCE_DIRPATH = '/Volumes/davidf/bin/server/mediaqueue/www'
-DESTINATION_DIRPATH = '/Volumes/davidf/Dropbox (Personal)/From MediaQueue'
+try:
+    import settings
+except ImportError:
+    sys.exit('Not configured. Please create settings.py and fill it out.')
 
 
 filepaths_being_queued = frozenset()
@@ -17,8 +18,8 @@ filepaths_being_queued = frozenset()
 def upload(filepath):
     global filepaths_being_queued
     
-    source_filepath = os.path.join(SOURCE_DIRPATH, filepath)
-    destination_filepath = os.path.join(DESTINATION_DIRPATH, filepath)
+    source_filepath = os.path.join(settings.SOURCE_DIRPATH, filepath)
+    destination_filepath = os.path.join(settings.DESTINATION_DIRPATH, filepath)
     
     if not os.path.isfile(source_filepath):
         return HTTPResponse(
@@ -71,4 +72,4 @@ def upload(filepath):
     )
 
 
-run(host='localhost', port=PORT)
+run(host='localhost', port=settings.PORT)
